@@ -18,10 +18,19 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
+import { useStore } from "vuex";
 import SideMenu from "@/components/SideMenu/index.vue";
+import { LOGIN_TOKEN_KEY } from "@/utils/consts";
 
 export default defineComponent({
+  setup() {
+    const store = useStore();
+    onMounted(() => {
+      const token = localStorage.getItem(LOGIN_TOKEN_KEY);
+      if (token) store.dispatch("user/getUserInfo");
+    });
+  },
   components: { SideMenu },
 });
 </script>

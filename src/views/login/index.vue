@@ -71,7 +71,6 @@ export default {
           loading.value = false;
         })
         .then((data) => {
-          console.log(data);
           // 保存token
           localStorage.setItem(LOGIN_TOKEN_KEY, data.loginSessionId);
           // // 保存userInfo
