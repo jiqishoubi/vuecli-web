@@ -12,16 +12,18 @@ const routes = [
       }
     ]
   },
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: Home,
-  // },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   component: () => import('../views/About.vue'),
-  // },
+  // BasicLayout
+  {
+    path: '/',
+    component: () => import('@/layouts/BasicLayout/index.vue'),
+    children: [
+      { path: '/', redirect: '/home' },
+      {
+        path: '/home',
+        component: () => import('@/views/home/index.vue'),
+      }
+    ]
+  }
 ];
 
 const router = createRouter({

@@ -11,7 +11,7 @@
       </el-header>
 
       <el-main>
-        <router-view></router-view>
+        <router-view />
       </el-main>
     </el-container>
   </el-container>
@@ -22,18 +22,6 @@ import { defineComponent } from "vue";
 import SideMenu from "@/components/SideMenu/index.vue";
 
 export default defineComponent({
-  setup() {
-    const handleOpen = (key, keyPath) => {
-      console.log(key, keyPath);
-    };
-    const handleClose = (key, keyPath) => {
-      console.log(key, keyPath);
-    };
-    return {
-      handleOpen,
-      handleClose,
-    };
-  },
   components: { SideMenu },
 });
 </script>
