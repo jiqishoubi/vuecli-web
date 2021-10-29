@@ -1,5 +1,4 @@
 import request from "@/utils/request"
-import produce from 'immer';
 import lodash from 'lodash'
 
 const user = {
@@ -9,9 +8,6 @@ const user = {
   }),
   getters: {},
   actions: {
-    // initUserInfo(a, b, c, d) {
-
-    // },
     getUserInfo({ state, getters, dispatch, commit }) {
       return request({
         url: '/web/getLoginStaffInfo'

@@ -1,5 +1,5 @@
 <template>
-  <div>{{ userInfo?.name }}</div>
+  <div>{{ userInfo?.staffName }}</div>
 </template>
 
 <script>
@@ -10,8 +10,6 @@ export default {
   setup() {
     const store = useStore();
     const userInfo = computed(() => store.state.user.userInfo);
-    console.log("userInfo", userInfo);
-
     return {
       userInfo,
     };
