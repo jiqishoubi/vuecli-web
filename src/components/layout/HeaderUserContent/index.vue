@@ -1,10 +1,16 @@
 <template>
-  <div class="header_box">
-    <div class="header_content"></div>
-    <div class="header_user_content">
-      <HeaderUserContent />
-    </div>
-  </div>
+  <el-dropdown size="small">
+    <span class="username">
+      {{ userInfo?.staffName }}
+      <span v-if="userInfo?.loginName">（{{ userInfo?.loginName }}）</span></span
+    >
+    <template #dropdown>
+      <el-dropdown-menu>
+        <el-dropdown-item>个人中心</el-dropdown-item>
+        <el-dropdown-item>注销</el-dropdown-item>
+      </el-dropdown-menu>
+    </template>
+  </el-dropdown>
 </template>
 
 <script>
@@ -29,15 +35,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("~@/common/styles.less");
-
-.header_box {
-  .flexCenter;
-  font-size: 14px;
-  height: 100%;
-
-  .header_content {
-    flex: 1 0 0;
-  }
+.username {
+  cursor: pointer;
 }
 </style>
