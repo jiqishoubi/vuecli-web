@@ -32,11 +32,19 @@ const routes = [
       // 项目管理
       {
         path: '/web/company/projectmgr/projectmgr',
+        name: '项目管理',
         component: () => import('@/views/project/projectMng/index.vue'),
       },
+      {
+        path: '/web/company/projectmgr/projectgroupmgr',
+        name: '项目分类',
+        component: () => import('@/views/project/projectGroup/index.vue'),
+      },
+
       route404
     ]
   },
+
   route404
 ];
 
