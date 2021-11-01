@@ -7,10 +7,7 @@
 </template>
 
 <script>
-import SideMenu from "@/components/SideMenu/index.vue";
-export default {
-  components: { SideMenu },
-};
+export default {};
 </script>
 
 <style lang="less" scoped>

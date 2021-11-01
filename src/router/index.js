@@ -21,9 +21,15 @@ const routes = [
       {
         path: '/home',
         component: () => import('@/views/home/index.vue'),
-      }
+      },
+      // 项目管理
+      {
+        path: '/web/company/projectmgr/projectmgr',
+        component: () => import('@/views/project/projectMng/index.vue'),
+      },
+      { path: '*', component: '@/views/common/404.vue' }
     ]
-  }
+  },
 ];
 
 const router = createRouter({
