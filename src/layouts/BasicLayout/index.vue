@@ -82,6 +82,8 @@ export default defineComponent({
     }
 
     .roter_view_wrap {
+      box-sizing: border-box;
+      padding: 15px;
       background-color: #fff;
     }
   }

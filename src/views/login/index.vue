@@ -2,29 +2,16 @@
   <div>
     <el-form class="form" ref="formRef" :model="form" :rules="rules">
       <el-form-item prop="loginName">
-        <el-input
-          v-model="form.loginName"
-          placeholder="用户名"
-          clearable
-        ></el-input>
+        <el-input v-model="form.loginName" placeholder="用户名" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input
-          type="password"
-          v-model="form.password"
-          placeholder="密码"
-          clearable
-        ></el-input>
+        <el-input type="password" v-model="form.password" placeholder="密码" clearable></el-input>
       </el-form-item>
       <el-form-item prop="sms">
         <sms-input v-model="form.sms"></sms-input>
       </el-form-item>
       <el-form-item>
-        <el-button
-          type="primary"
-          @click="submit"
-          :loading="loading"
-          style="width: 100%"
+        <el-button type="primary" @click="submit" :loading="loading" style="width: 100%"
           >登录</el-button
         >
       </el-form-item>
