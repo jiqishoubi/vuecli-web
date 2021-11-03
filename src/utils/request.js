@@ -1,9 +1,9 @@
-import axios from 'axios';
-import { ElMessage } from 'element-plus'
-import { globalHost } from './utils';
-import { LOGIN_TOKEN_KEY } from './consts';
+import axios from "axios";
+import { ElMessage } from "element-plus";
+import { globalHost } from "./utils";
+import { LOGIN_TOKEN_KEY } from "./consts";
 
-const ERROR_MESSAGE = '网络异常';
+const ERROR_MESSAGE = "网络异常";
 
 function message(type, str) {
   ElMessage({
@@ -11,14 +11,24 @@ function message(type, str) {
     message: str,
     center: true,
     showClose: true,
-  })
+  });
 }
 
-const request = (options) => {
+/**
+ *
+ * @param {object} options
+ * @param {string} options.url
+ * @param {any} options.data
+ * @param {string} [options.method='post']
+ * @param {object} [options.headers={}]
+ * @param {boolean} [options.isNeedErrMsg=true]
+ * @returns
+ */
+function request(options) {
   const {
     url: urlParam,
     data: dataParam,
-    method = 'post',
+    method = "post",
     headers = {},
     isNeedErrMsg = true,
     ...restOptions
@@ -32,7 +42,7 @@ const request = (options) => {
     url = `${url}?sessionId=${token}`;
   }
 
-  if (method == 'formData') {
+  if (method == "formData") {
     // 上传文件
     const formData = new FormData();
     for (let key in dataParam) {
@@ -40,16 +50,16 @@ const request = (options) => {
       formData.append(key, value);
     }
     data = formData;
-    headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    headers["Content-Type"] = "application/x-www-form-urlencoded";
   }
 
   return new Promise((resolve, reject) => {
     axios
       .request({
-        url: url.indexOf('http:') > -1 || url.indexOf('https:') > -1 ? url : globalHost() + url,
-        method: method == 'get' ? 'get' : 'post',
+        url: url.indexOf("http:") > -1 || url.indexOf("https:") > -1 ? url : globalHost() + url,
+        method: method == "get" ? "get" : "post",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           ...headers,
         },
         data,
@@ -59,25 +69,25 @@ const request = (options) => {
       .then((response) => {
         if (response.data) {
           const res = response.data;
-          if (res.code === '0') {
+          if (res.code === "0") {
             // 业务成功
             resolve(res.data);
           } else {
             // 业务失败
             reject(res);
-            if (isNeedErrMsg) message('warning', res.message || ERROR_MESSAGE);
+            if (isNeedErrMsg) message("warning", res.message || ERROR_MESSAGE);
           }
         } else {
           reject(JSON.stringify(err));
-          if (isNeedErrMsg) message('error', ERROR_MESSAGE);
+          if (isNeedErrMsg) message("error", ERROR_MESSAGE);
         }
       })
       .catch((err) => {
         // 网络没通
         reject(JSON.stringify(err));
-        if (isNeedErrMsg) message('error', ERROR_MESSAGE);
+        if (isNeedErrMsg) message("error", ERROR_MESSAGE);
       });
   });
-};
+}
 
 export default request;

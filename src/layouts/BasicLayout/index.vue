@@ -25,18 +25,24 @@
 
 <script>
 import { defineComponent, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import SideMenu from "@/components/layout/SideMenu/index.vue";
 import Header from "@/components/layout/Header/index.vue";
 import Footer from "@/components/layout/Footer/index.vue";
-import { LOGIN_TOKEN_KEY } from "@/utils/consts";
+import { LOGIN_TOKEN_KEY, loginPath } from "@/utils/consts";
 
 export default defineComponent({
   setup() {
+    const router = useRouter();
     const store = useStore();
     onMounted(() => {
       const token = localStorage.getItem(LOGIN_TOKEN_KEY);
-      if (token) store.dispatch("user/initUserInfo");
+      if (token) {
+        store.dispatch("user/initUserInfo");
+      } else {
+        router.replace(loginPath);
+      }
     });
   },
   components: { SideMenu, Header, Footer },

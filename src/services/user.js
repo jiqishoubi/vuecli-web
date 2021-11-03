@@ -1,5 +1,5 @@
-import { LOGIN_TOKEN_KEY } from '@/utils/consts'
-import request from '@/utils/request'
+import { LOGIN_TOKEN_KEY } from "@/utils/consts";
+import request from "@/utils/request";
 
 // 获取全部的菜单 并处理
 export function getAllMenuAjax() {
@@ -16,7 +16,8 @@ export function getAllMenuAjax() {
     }
 
     const data = await request({
-      url: '/web/menu/getAllMenuList',
+      url: "/web/menu/getAllMenuList",
+      isNeedErrMsg: false,
     });
 
     let dealResult = {};
@@ -40,14 +41,14 @@ export function dealMenu(allMenu) {
   let levelArr = [];
 
   allMenu.forEach((obj) => {
-    if (obj.menuUrl && obj.menuUrl.indexOf('-') > -1 && obj.menuUrl.indexOf('/') == -1) {
+    if (obj.menuUrl && obj.menuUrl.indexOf("-") > -1 && obj.menuUrl.indexOf("/") == -1) {
       //权限
       rightsArr.push(obj);
     } else {
       //菜单
       if (!levelArr[obj.menuLevel]) levelArr[obj.menuLevel] = [];
-      obj.path = obj.menuUrl || '';
-      obj.name = obj.menuName || '';
+      obj.path = obj.menuUrl || "";
+      obj.name = obj.menuName || "";
 
       // if (obj.menuLevel != 2) {
       //   obj.icon = getMenuIcon(obj);
@@ -84,13 +85,13 @@ export function dealMenu(allMenu) {
     menuTree,
     rightsArr,
   };
-};
+}
 
 /**
  * 获取第一个菜单
  */
-export function findFirstMenuUrl({ arr: arrArg, childrenkey = 'children', urlKey = 'menuUrl' }) {
-  let url = '';
+export function findFirstMenuUrl({ arr: arrArg, childrenkey = "children", urlKey = "menuUrl" }) {
+  let url = "";
   const getFirst = (arr) => {
     if (arr && arr[0]) {
       if (arr[0][childrenkey]) {
@@ -102,5 +103,4 @@ export function findFirstMenuUrl({ arr: arrArg, childrenkey = 'children', urlKey
   };
   getFirst(arrArg);
   return url;
-};
-
+}

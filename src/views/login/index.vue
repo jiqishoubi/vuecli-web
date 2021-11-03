@@ -60,11 +60,6 @@ export default {
         .then((data) => {
           // 保存token
           localStorage.setItem(LOGIN_TOKEN_KEY, data.loginSessionId);
-          // // 保存userInfo
-          // setInitialState({
-          //   ...initialState,
-          //   currentUser: data.staffInfo,
-          // });
           // 跳转
           router.push("/");
         });

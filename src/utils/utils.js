@@ -1,5 +1,6 @@
 import { produce } from "immer";
 import { prodHostArr, allHostObj } from "./consts";
+import { ElMessageBox } from "element-plus";
 
 /**
  * @description 生成随机字符串
@@ -50,4 +51,24 @@ export function cloneDeep(obj) {
     return objClone;
   }
   return obj;
+}
+
+export function myConfirm(str) {
+  return new Promise((resolve, reject) => {
+    ElMessageBox({
+      title: "提示", //MessageBox 标题
+      message: str, //MessageBox 消息正文内容
+      confirmButtonText: "确定", //确定按钮的文本内容
+      cancelButtonText: "取消", //取消按钮的文本内容
+      showCancelButton: true, //是否显示取消按钮
+      closeOnClickModal: false, //是否可通过点击遮罩关闭
+      type: "warning", //消息类型，用于显示图标
+    })
+      .then(() => {
+        resolve();
+      })
+      .catch(() => {
+        reject();
+      });
+  });
 }
