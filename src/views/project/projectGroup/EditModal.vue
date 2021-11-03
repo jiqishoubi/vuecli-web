@@ -20,10 +20,10 @@
 </template>
 
 <script>
-import { computed, reactive, ref, toRefs } from "vue";
+import { computed, reactive, ref } from "vue";
 import StyledModal from "@/components/StyledModal";
 import request from "@/utils/request";
-import lodash from "lodash";
+import { cloneDeep } from "@/utils/utils";
 
 export default {
   emits: {
@@ -48,8 +48,9 @@ export default {
     function open(r) {
       visible.value = true;
       if (r) {
-        record.v = JSON.parse(JSON.stringify(r)); // todo ?
-        renderForm(r);
+        const data = cloneDeep(r); // todo 只有json.stringify这一个方法吗？
+        record.v = data;
+        renderForm(data);
       }
     }
 
@@ -59,8 +60,8 @@ export default {
     }
 
     // form回显
-    function renderForm(r) {
-      formModel.form = r;
+    function renderForm(data) {
+      formModel.form = data;
     }
 
     // 提交
