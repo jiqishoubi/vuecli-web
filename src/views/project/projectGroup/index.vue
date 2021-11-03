@@ -1,11 +1,25 @@
 <template>
-  <SearchForm ref="searchFormRef" :formModel="formModel" @search="search" :searchLoading="loading">
+  <SearchForm
+    ref="searchFormRef"
+    :formModel="searchController.formModel"
+    @search="tableController.search"
+    :searchLoading="tableController.loading"
+  >
     <template #form>
       <el-form-item prop="groupName">
-        <el-input placeholder="分类名称" v-model="formModel.groupName" clearable></el-input>
+        <el-input
+          placeholder="分类名称"
+          v-model="searchController.formModel.groupName"
+          clearable
+        ></el-input>
       </el-form-item>
       <el-form-item prop="disabled">
-        <el-select placeholder="状态" v-model="formModel.disabled" clearable style="width: 100%">
+        <el-select
+          placeholder="状态"
+          v-model="searchController.formModel.disabled"
+          clearable
+          style="width: 100%"
+        >
           <el-option label="有效" value="0"></el-option>
           <el-option label="无效" value="1"></el-option>
         </el-select>
@@ -16,25 +30,26 @@
     </template>
   </SearchForm>
   <ProTable
-    :columns="columns"
-    :tableData="tableData"
-    :loading="loading"
-    :total="total"
-    :pageState="pageState"
-    @pageChange="onPageChange"
+    :columns="tableController.columns"
+    :tableData="tableController.tableData"
+    :loading="tableController.loading"
+    :total="tableController.total"
+    :pageState="tableController.pageState"
+    @pageChange="tableController.onPageChange"
   />
 </template>
 
 <script>
+import { isReactive } from "vue";
 import SearchForm from "@/components/SearchForm";
 import ProTable from "@/components/ProTable";
-import useSearchFormController from "@/hooks/useSearchFormController";
+import useSearchFormCtrller from "@/hooks/useSearchFormCtrller";
 import useTableController from "@/hooks/useTableController";
 
 export default {
   setup() {
     // searchForm
-    const { searchFormRef, formModel } = useSearchFormController({
+    const searchController = useSearchFormCtrller({
       form: {
         groupName: "",
         disabled: "",
@@ -49,21 +64,22 @@ export default {
       {
         label: "操作",
         prop: "actions",
-        render: () => {
-          return <el-link>编辑</el-link>;
+        render: (v, record) => {
+          return <el-link onClick={() => {}}>编辑</el-link>;
         },
       },
     ];
     const tableController = useTableController({
       columns,
       api: "/web/projectgroup/getProjectGroupList",
-      formModel,
+      formModel: searchController.formModel,
     });
 
+    function edit() {}
+
     return {
-      searchFormRef,
-      formModel,
-      ...tableController,
+      searchController,
+      tableController,
     };
   },
   components: { SearchForm, ProTable },

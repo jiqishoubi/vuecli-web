@@ -1,5 +1,17 @@
-import { onMounted, reactive, toRefs, ref, computed } from 'vue'
-import request from '@/utils/request'
+import { onMounted, reactive, toRefs, ref, computed } from "vue";
+import request from "@/utils/request";
+
+/**
+ * @typedef TableController
+ * @property {Array<any>} columns
+ * @property {Array<any>} tableData
+ * @property {boolean} loading
+ * @property {number} total
+ * @property {{page:number;pageSize:number;}} pageState
+ * @property {(e: {page:number;pageSize:number;}) => void} onPageChange
+ * @property {function} search
+ * @property {function} refresh
+ */
 
 /**
  *
@@ -7,49 +19,52 @@ import request from '@/utils/request'
  * @param {Array<any>} [options.columns=[]] columns透传
  * @param {string} options.api
  * @param {any} [option.formModel={}] searchForm的formModel
- * @returns
+ * @returns {TableController}
  */
 function useTableController(options) {
-  const { columns = [], api, formModel = {} } = options
+  const { columns = [], api, formModel = {} } = options;
 
   const pageState = reactive({
     page: 1,
     pageSize: 10,
-  })
-  const total = ref(0)
-  const tableData = ref([])
-  const loading = ref(false)
+  });
+  const total = ref(0);
+  const tableData = ref([]);
+  const loading = ref(false);
 
   const showColumns = computed(() => {
-    return columns
-  })
+    return columns;
+  });
 
   onMounted(() => {
-    getData()
-  })
+    getData();
+  });
 
   function getData(pageStateP) {
-    const postPage = pageStateP ?? pageState
+    const postPage = pageStateP ?? pageState;
     const postData = {
       page: postPage.page,
       rows: postPage.pageSize,
-      ...formModel
-    }
+      ...formModel,
+    };
     // 请求
-    loading.value = true
+    loading.value = true;
     return request({
       url: api,
       data: postData,
-    }).finally(() => { loading.value = false })
-      .then((data) => {
-        tableData.value = data?.data || []
-        total.value = data?.rowTop || 0
+    })
+      .finally(() => {
+        loading.value = false;
       })
+      .then((data) => {
+        tableData.value = data?.data || [];
+        total.value = data?.rowTop || 0;
+      });
   }
 
   function onPageChange(e) {
-    pageState.value = e
-    getData(e)
+    pageState.value = e;
+    getData(e);
   }
 
   // 查询（回到第一页）
@@ -57,14 +72,14 @@ function useTableController(options) {
     return getData({
       page: 1,
       pageSize: pageState.pageSize,
-    })
+    });
   }
   // 刷新（在当前页）
   function refresh() {
-    return getData()
+    return getData();
   }
 
-  return {
+  return reactive({
     columns: showColumns,
     tableData,
     loading,
@@ -73,7 +88,7 @@ function useTableController(options) {
     onPageChange,
     search,
     refresh,
-  }
+  });
 }
 
-export default useTableController
+export default useTableController;

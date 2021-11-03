@@ -43,12 +43,12 @@ export default {
       });
     },
   },
+
   render() {
     return (
       <div class="my_pro_table">
         <el-table class="table_my" data={this.tableData} v-loading={this.loading}>
           {this.columns.map((columnObj, index) => {
-            const record = this.tableData[index] ?? {};
             return (
               <el-table-column
                 key={columnObj.prop || index}
@@ -56,13 +56,18 @@ export default {
                 prop={columnObj.prop}
                 align="center"
               >
-                {columnObj.render
-                  ? columnObj.render(record[columnObj.prop || ""], record)
-                  : record[columnObj.prop || ""]}
+                {(e) => {
+                  const record = e.row;
+                  if (columnObj.render) {
+                    return columnObj.render(record[columnObj.prop || ""], record);
+                  }
+                  return record[columnObj.prop || ""];
+                }}
               </el-table-column>
             );
           })}
         </el-table>
+
         <div class="pagination_box">
           <el-pagination
             class="pro_table_pagination"
