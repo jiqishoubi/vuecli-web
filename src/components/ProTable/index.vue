@@ -1,4 +1,6 @@
 <script>
+import { toRef, toRefs } from "vue";
+
 export default {
   emits: {
     pageChange: null,

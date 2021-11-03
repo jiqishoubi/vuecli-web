@@ -26,7 +26,7 @@
       </el-form-item>
     </template>
     <template #controll>
-      <el-button type="primary">新建</el-button>
+      <el-button type="primary" @click="clickAdd">新建</el-button>
     </template>
   </SearchForm>
   <ProTable
@@ -37,17 +37,26 @@
     :pageState="tableController.pageState"
     @pageChange="tableController.onPageChange"
   />
+
+  <!-- 模态 -->
+  <EditModal
+    ref="editModalRef"
+    @successAdd="tableController.search"
+    @successEdit="tableController.refresh"
+  />
 </template>
 
 <script>
-import { isReactive } from "vue";
+import { ref, toRef, toRefs } from "vue";
 import SearchForm from "@/components/SearchForm";
 import ProTable from "@/components/ProTable";
+import EditModal from "./EditModal.vue";
 import useSearchFormCtrller from "@/hooks/useSearchFormCtrller";
 import useTableController from "@/hooks/useTableController";
 
 export default {
   setup() {
+    const editModalRef = ref(null);
     // searchForm
     const searchController = useSearchFormCtrller({
       form: {
@@ -64,8 +73,16 @@ export default {
       {
         label: "操作",
         prop: "actions",
-        render: (v, record) => {
-          return <el-link onClick={() => {}}>编辑</el-link>;
+        render: (_, record) => {
+          return (
+            <el-link
+              onClick={() => {
+                clickEdit(record);
+              }}
+            >
+              编辑
+            </el-link>
+          );
         },
       },
     ];
@@ -75,14 +92,22 @@ export default {
       formModel: searchController.formModel,
     });
 
-    function edit() {}
+    function clickAdd() {
+      editModalRef.value?.open();
+    }
+
+    function clickEdit(record) {
+      editModalRef.value?.open(record);
+    }
 
     return {
       searchController,
       tableController,
+      editModalRef,
+      clickAdd,
     };
   },
-  components: { SearchForm, ProTable },
+  components: { SearchForm, ProTable, EditModal },
 };
 </script>
 
