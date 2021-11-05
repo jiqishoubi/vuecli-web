@@ -1,9 +1,8 @@
 <template>
   <div class="header_box">
     <div class="header_content">
-      <!-- 搞一个面包屑 -->
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item v-for="(item, index) in breadcrumbItems" :key="index">
+        <el-breadcrumb-item v-for="(item, index) in routerBreadcrumb" :key="index">
           {{ item.menuTitle }}
         </el-breadcrumb-item>
       </el-breadcrumb>
@@ -18,21 +17,51 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import HeaderUserContent from "../HeaderUserContent/index.vue";
-import useRouterBreadcrumb from "./useRouterBreadcrumb";
 
 export default {
+  data() {
+    return {
+      routerBreadcrumb: [],
+    };
+  },
   setup() {
     const store = useStore();
-    const userInfo = computed(() => store.state.user.userInfo);
-    const menuTree = computed(() => store.state.user.menuTree);
-
-    const breadcrumbItems = useRouterBreadcrumb();
+    const allMenu = computed(() => store.state.user.allMenu);
 
     return {
-      userInfo,
-      menuTree,
-      breadcrumbItems,
+      allMenu,
     };
+  },
+  watch: {
+    allMenu(newV) {
+      this.getRouterBreadcrumb(newV);
+    },
+    $route(to, form) {
+      this.getRouterBreadcrumb(this.allMenu, to.path);
+    },
+  },
+  methods: {
+    getRouterBreadcrumb(allMenu, toPath) {
+      function getItemArr(path, itemArr) {
+        let menuUrl = path ?? window.location.pathname;
+        let arr = itemArr || [];
+        let curMenu = allMenu.find((item) => item.menuUrl == menuUrl);
+        if (curMenu) {
+          arr.unshift(curMenu);
+          if (curMenu.parentCode) {
+            let parentMenu = allMenu.find((item) => item.menuCode == curMenu.parentCode);
+            return getItemArr(parentMenu.menuUrl, arr);
+          } else {
+            return arr;
+          }
+        } else {
+          return arr;
+        }
+      }
+
+      const items = getItemArr(toPath);
+      this.routerBreadcrumb = items;
+    },
   },
   components: {
     HeaderUserContent,

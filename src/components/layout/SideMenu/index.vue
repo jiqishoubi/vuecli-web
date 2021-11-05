@@ -14,19 +14,21 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 import SideMenuItem from "@/components/layout/SideMenuItem";
 import Skeleton from "@/components/layout/Skeleton";
-import useElMenu from "./useElMenu";
 
 export default {
   setup() {
     const store = useStore();
     const userInfo = computed(() => store.state.user.userInfo);
     const menuTree = computed(() => store.state.user.menuTree);
-    const { defaultActive } = useElMenu();
     return {
       userInfo,
       menuTree,
-      defaultActive,
     };
+  },
+  computed: {
+    defaultActive() {
+      return this.$route.path;
+    },
   },
   components: {
     "side-menu-item": SideMenuItem,

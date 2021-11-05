@@ -27,6 +27,7 @@
     </template>
     <template #controll>
       <el-button type="primary" @click="clickAdd">新建</el-button>
+      <el-button type="primary" @click="goTest">测试：去一个没有权限的路由</el-button>
     </template>
   </SearchForm>
   <ProTable
@@ -106,6 +107,11 @@ export default {
       editModalRef,
       clickAdd,
     };
+  },
+  methods: {
+    goTest() {
+      this.$router.push("/web/company/projectmgr/projectgroupmgr2");
+    },
   },
   components: { SearchForm, ProTable, EditModal },
 };

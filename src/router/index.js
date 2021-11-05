@@ -43,6 +43,11 @@ const routes = [
         name: "项目分类",
         component: () => import("@/views/project/projectGroup/index.vue"),
       },
+      {
+        path: "/web/company/projectmgr/projectgroupmgr2",
+        name: "项目分类2",
+        component: () => import("@/views/project/projectGroup/index.vue"),
+      },
 
       route404,
     ],
@@ -54,13 +59,6 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-});
-
-router.beforeEach((to, from) => {
-  // const toPath = to.path;
-  // if (toPath == loginPath) return true;
-  // const a = useHaveRight(toPath);
-  return true;
 });
 
 export default router;

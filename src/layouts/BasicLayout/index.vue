@@ -15,6 +15,7 @@
         <!-- 业务页面 -->
         <div class="roter_view_wrap">
           <Skeleton v-if="menuTree.length == 0" />
+          <Page404 v-else-if="!isHaveRight" />
           <router-view v-else />
         </div>
 
@@ -25,21 +26,28 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, computed } from "vue";
+import { defineComponent, onMounted, computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import SideMenu from "@/components/layout/SideMenu/index.vue";
 import Header from "@/components/layout/Header/index.vue";
 import Footer from "@/components/layout/Footer/index.vue";
 import Skeleton from "@/components/layout/Skeleton";
+import Page404 from "@/views/common/404";
 import { LOGIN_TOKEN_KEY, loginPath } from "@/utils/consts";
+import { useHaveRight } from "@/utils/utils";
 
 export default defineComponent({
   setup() {
+    const toPath = ref(window.location.pathname);
     const router = useRouter();
+
     const store = useStore();
     const allMenu = computed(() => store.state.user.allMenu);
     const menuTree = computed(() => store.state.user.menuTree);
+
+    const isHaveRight = computed(() => useHaveRight(toPath.value, allMenu.value));
+
     onMounted(() => {
       const token = localStorage.getItem(LOGIN_TOKEN_KEY);
       if (token) {
@@ -48,16 +56,19 @@ export default defineComponent({
         router.replace(loginPath);
       }
     });
+
     return {
-      allMenu,
+      toPath,
       menuTree,
+      isHaveRight,
     };
   },
-  beforeRouteUpdate(to, from, next) {
-    console.log(to);
-    next();
+  watch: {
+    $route(to) {
+      this.toPath = to.path;
+    },
   },
-  components: { SideMenu, Header, Footer, Skeleton },
+  components: { SideMenu, Header, Footer, Skeleton, Page404 },
 });
 </script>
 
