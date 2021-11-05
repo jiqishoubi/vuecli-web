@@ -1,6 +1,7 @@
 import { produce } from "immer";
 import { prodHostArr, allHostObj } from "./consts";
 import { ElMessageBox } from "element-plus";
+import store from "@/store/index.ts";
 
 /**
  * @description 生成随机字符串
@@ -71,4 +72,27 @@ export function myConfirm(str) {
         reject();
       });
   });
+}
+
+/**
+ *
+ * @param {*} url
+ * @param {*} [allMenu]
+ * @returns {boolean}
+ */
+export function useHaveRight(url, allMenu) {
+  let allRights = [];
+  if (allMenu) {
+    allRights = allMenu;
+  } else {
+    allRights = store.state?.user?.allMenu || [];
+  }
+  let isHave = false;
+  for (let i = 0; i < allRights.length; i++) {
+    if (url == allRights[i].menuUrl) {
+      isHave = true;
+      break;
+    }
+  }
+  return isHave;
 }

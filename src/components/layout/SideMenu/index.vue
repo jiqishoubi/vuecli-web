@@ -1,10 +1,6 @@
 <template>
-  <el-menu
-    class="el_menu_my"
-    :unique-opened="true"
-    :defaultActive="defaultActive"
-    v-loading="menuTree.length == 0"
-  >
+  <Skeleton v-if="menuTree.length == 0" :animated="true" />
+  <el-menu v-else class="el_menu_my" :unique-opened="true" :defaultActive="defaultActive">
     <side-menu-item
       v-for="(item, index) in menuTree"
       :key="index"
@@ -17,6 +13,7 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import SideMenuItem from "@/components/layout/SideMenuItem";
+import Skeleton from "@/components/layout/Skeleton";
 import useElMenu from "./useElMenu";
 
 export default {
@@ -33,6 +30,7 @@ export default {
   },
   components: {
     "side-menu-item": SideMenuItem,
+    Skeleton,
   },
 };
 </script>

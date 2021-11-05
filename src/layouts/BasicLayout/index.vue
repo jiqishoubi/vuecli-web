@@ -14,7 +14,8 @@
 
         <!-- 业务页面 -->
         <div class="roter_view_wrap">
-          <router-view />
+          <Skeleton v-if="menuTree.length == 0" />
+          <router-view v-else />
         </div>
 
         <Footer />
@@ -24,18 +25,21 @@
 </template>
 
 <script>
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import SideMenu from "@/components/layout/SideMenu/index.vue";
 import Header from "@/components/layout/Header/index.vue";
 import Footer from "@/components/layout/Footer/index.vue";
+import Skeleton from "@/components/layout/Skeleton";
 import { LOGIN_TOKEN_KEY, loginPath } from "@/utils/consts";
 
 export default defineComponent({
   setup() {
     const router = useRouter();
     const store = useStore();
+    const allMenu = computed(() => store.state.user.allMenu);
+    const menuTree = computed(() => store.state.user.menuTree);
     onMounted(() => {
       const token = localStorage.getItem(LOGIN_TOKEN_KEY);
       if (token) {
@@ -44,8 +48,16 @@ export default defineComponent({
         router.replace(loginPath);
       }
     });
+    return {
+      allMenu,
+      menuTree,
+    };
   },
-  components: { SideMenu, Header, Footer },
+  beforeRouteUpdate(to, from, next) {
+    console.log(to);
+    next();
+  },
+  components: { SideMenu, Header, Footer, Skeleton },
 });
 </script>
 
